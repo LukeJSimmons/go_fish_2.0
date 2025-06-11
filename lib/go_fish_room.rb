@@ -1,4 +1,4 @@
-require 'go_fish_game'
+require_relative 'go_fish_game'
 
 class GoFishRoom
   attr_reader :clients

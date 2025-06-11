@@ -1,6 +1,6 @@
 require 'socket'
 
-require 'go_fish_room'
+require_relative 'go_fish_room'
 
 class Server
   def port_number
