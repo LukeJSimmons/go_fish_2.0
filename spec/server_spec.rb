@@ -21,6 +21,14 @@ describe Server do
     expect(@server).to respond_to :clients
   end
 
+  it 'has players' do
+    expect(@server).to respond_to :players
+  end
+
+  it 'has users' do
+    expect(@server).to respond_to :users
+  end
+
   it 'has rooms' do
     expect(@server).to respond_to :rooms
   end
@@ -45,6 +53,18 @@ describe Server do
       expect {
         @server.accept_new_client('Player 1')
       }.to change(@server.clients, :count).by 1
+    end
+
+    it 'adds a new player to players array' do
+      expect {
+        @server.accept_new_client('Player 1')
+      }.to change(@server.players, :count).by 1
+    end
+
+    it 'adds a new user to users array' do
+      expect {
+        @server.accept_new_client('Player 1')
+      }.to change(@server.users, :count).by 1
     end
   end
 
