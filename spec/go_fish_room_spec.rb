@@ -5,4 +5,8 @@ describe GoFishRoom do
   it 'has a game' do
     expect(room).to respond_to :game
   end
+
+  it 'has clients' do
+    expect(room).to respond_to :clients
+  end
 end

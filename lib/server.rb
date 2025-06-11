@@ -34,7 +34,8 @@ class Server
   def create_room_if_possible
     return unless clients.count == 2
     clients.each { |client| client.puts "Ready!" }
-    room = GoFishRoom.new
+    room = GoFishRoom.new(clients)
+    clients.clear
     rooms << room
     room
   end

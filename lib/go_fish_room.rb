@@ -1,7 +1,8 @@
 class GoFishRoom
-  attr_reader :game
+  attr_reader :game, :clients
   
-  def initialize
+  def initialize(clients)
     @game = nil
+    @clients = clients
   end
 end
