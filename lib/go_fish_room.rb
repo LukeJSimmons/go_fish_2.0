@@ -1,24 +1,17 @@
 require_relative 'go_fish_game'
+require_relative 'go_fish_player'
 
 class GoFishRoom
-  attr_reader :clients
-  attr_accessor :game, :players
+  attr_reader :users
+  attr_accessor :game
   
-  def initialize(clients)
-    @game = nil
-    @clients = clients
-    @players = nil
+  def initialize(users)
+    @users = users
+    @game = create_game
   end
 
   def create_game
-    self.game = GoFishGame.new
-  end
-
-  def create_players
-    self.players = {}
-    clients.each do |client|
-      players[client] = GoFishPlayer.new("Random Player")
-    end
+    self.game = GoFishGame.new(users.map(&:player))
   end
   
 end
