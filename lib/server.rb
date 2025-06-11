@@ -34,5 +34,7 @@ class Server
     return unless clients.count == 2
     clients.each { |client| client.puts "Ready!" }
     game = GoFishGame.new
+    games << game
+    game
   end
 end

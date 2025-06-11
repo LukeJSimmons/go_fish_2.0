@@ -61,6 +61,12 @@ describe Server do
       @server.accept_new_client('Player 1')
       expect(client1.capture_output).to match(/welcome/i)
     end
+
+    it 'adds client to clients array' do
+      expect {
+        @server.accept_new_client('Player 1')
+      }.to change(@server.clients, :count).by 1
+    end
   end
 
   describe '#create_game_if_possible' do
@@ -96,6 +102,12 @@ describe Server do
 
       it 'returns a GoFishGame' do
         expect(@server.create_game_if_possible).to respond_to :deck
+      end
+
+      it 'adds game to games array' do
+        expect {
+        @server.create_game_if_possible
+      }.to change(@server.games, :count).by 1
       end
     end
   end
