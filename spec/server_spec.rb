@@ -42,6 +42,10 @@ describe Server do
     expect(@server).to respond_to :clients
   end
 
+  it 'has games' do
+    expect(@server).to respond_to :games
+  end
+
   it 'has a port_number' do
     expect(@server).to respond_to :port_number
   end
@@ -88,6 +92,10 @@ describe Server do
         @server.create_game_if_possible
         expect(client1.capture_output).to match (/ready/i)
         expect(client2.capture_output).to match (/ready/i)
+      end
+
+      it 'returns a GoFishGame' do
+        expect(@server.create_game_if_possible).to respond_to :deck
       end
     end
   end
