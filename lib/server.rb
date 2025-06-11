@@ -1,6 +1,6 @@
 require 'socket'
 
-require 'go_fish_game'
+require 'go_fish_room'
 
 class Server
   def port_number
@@ -11,8 +11,8 @@ class Server
     @clients ||= []
   end
 
-  def games
-    @games ||= []
+  def rooms
+    @rooms ||= []
   end
 
   def start
@@ -24,17 +24,18 @@ class Server
   end
 
   def accept_new_client(player_name="Random Player")
+    sleep 0.1
     client = @server.accept_nonblock
     clients << client
     client.puts "Welcome!"
   rescue IO::WaitReadable, Errno::EINTR
   end
 
-  def create_game_if_possible
+  def create_room_if_possible
     return unless clients.count == 2
     clients.each { |client| client.puts "Ready!" }
-    game = GoFishGame.new
-    games << game
-    game
+    room = GoFishRoom.new
+    rooms << room
+    room
   end
 end

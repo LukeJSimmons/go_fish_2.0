@@ -1,4 +1,4 @@
-class GoFishRunner
+class GoFishRoom
   attr_reader :game
   
   def initialize
