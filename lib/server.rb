@@ -38,7 +38,8 @@ class Server
     clients << client
     player = GoFishPlayer.new("name")
     players << player
-    users << User.new(client, player)
+    name = request_name_from_client(client)
+    users << User.new(name, client, player)
     client.puts "Welcome!"
   rescue IO::WaitReadable, Errno::EINTR
   end
@@ -46,9 +47,25 @@ class Server
   def create_room_if_possible
     return unless clients.count == 2
     clients.each { |client| client.puts "Ready!" }
-    room = GoFishRoom.new(clients, players)
+    room = GoFishRoom.new(users)
     clients.clear
     rooms << room
     room
+  end
+
+  private
+
+  def request_name_from_client(client)
+    client.puts "Please input your name:"
+    name = get_client_input(client)
+    client.puts "Hey #{name}!"
+  end
+
+  def get_client_input(client)
+    sleep(0.1)
+    begin
+      client.read_nonblock(1000).chomp
+    rescue IO::WaitReadable
+    end
   end
 end
