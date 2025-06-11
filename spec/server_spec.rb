@@ -111,6 +111,12 @@ describe Server do
         expect(client2.capture_output).to match (/ready/i)
       end
 
+      it 'displays all user names' do
+        @server.create_room_if_possible
+        expect(client1.capture_output).to include @server.users.map(&:name).join(', ')
+        expect(client2.capture_output).to include @server.users.map(&:name).join(', ')
+      end
+
       it 'returns a GoFishRoom' do
         expect(@server.create_room_if_possible).to respond_to :game
       end

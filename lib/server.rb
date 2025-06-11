@@ -46,7 +46,7 @@ class Server
 
   def create_room_if_possible
     return unless clients.count == 2
-    clients.each { |client| client.puts "Ready!" }
+    users.each { |user| user.client.puts users.map(&:name).join(', ') + " we're ready to play!" }
     room = GoFishRoom.new(users)
     clients.clear
     rooms << room
@@ -60,6 +60,7 @@ class Server
     name = nil
     name = get_client_input(client) until name
     client.puts "Hey #{name}!"
+    name
   end
 
   def get_client_input(client)
