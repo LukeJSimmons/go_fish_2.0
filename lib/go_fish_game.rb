@@ -1,7 +1,8 @@
 class GoFishGame
-  attr_reader :deck
+  attr_reader :deck, :players
   
-  def initialize
+  def initialize(players)
     @deck = nil
+    @players = players
   end
 end
