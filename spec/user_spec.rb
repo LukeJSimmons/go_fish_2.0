@@ -1,7 +1,7 @@
 require 'user'
 
 describe User do
-  let(:user) { User.new('client', 'player') }
+  let(:user) { User.new('name', 'client', 'player') }
   describe '#initialize' do
     it 'has a name' do
       expect(user).to respond_to :name

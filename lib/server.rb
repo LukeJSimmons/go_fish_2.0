@@ -32,14 +32,14 @@ class Server
     @server.close if @server
   end
 
-  def accept_new_client(player_name="Random Player")
+  def accept_new_client(player_name=nil)
     sleep 0.1
     client = @server.accept_nonblock
     clients << client
-    player = GoFishPlayer.new("name")
+    player_name ||= request_name_from_client(client)
+    player = GoFishPlayer.new(player_name)
     players << player
-    name = request_name_from_client(client)
-    users << User.new(name, client, player)
+    users << User.new(player_name, client, player)
     client.puts "Welcome!"
   rescue IO::WaitReadable, Errno::EINTR
   end
@@ -57,7 +57,8 @@ class Server
 
   def request_name_from_client(client)
     client.puts "Please input your name:"
-    name = get_client_input(client)
+    name = nil
+    name = get_client_input(client) until name
     client.puts "Hey #{name}!"
   end
 

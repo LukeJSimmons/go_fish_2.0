@@ -68,13 +68,14 @@ describe Server do
     end
 
     it 'asks for a name' do
-      @server.accept_new_client('Player 1')
+      client1.provide_input('joe')
+      @server.accept_new_client
       expect(client1.capture_output).to match (/name/i)
     end
 
     it 'displays the name back to the player' do
       client1.provide_input('joe')
-      @server.accept_new_client('Player 1')
+      @server.accept_new_client
       expect(client1.capture_output).to match (/joe/i)
     end
   end
