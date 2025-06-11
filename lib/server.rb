@@ -23,4 +23,9 @@ class Server
     client.puts "Welcome!"
   rescue IO::WaitReadable, Errno::EINTR
   end
+
+  def create_game_if_possible
+    return unless clients.count == 2
+    clients.each { |client| client.puts "ready" }
+  end
 end

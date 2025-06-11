@@ -52,10 +52,43 @@ describe Server do
     before do
       @clients.push(client1)
     end
-    
+
     it 'sends a welcome message to client' do
       @server.accept_new_client('Player 1')
       expect(client1.capture_output).to match(/welcome/i)
+    end
+  end
+
+  describe '#create_game_if_possible' do
+    context 'when there is only one player' do
+      let(:client1) { MockFishSocketClient.new(@server.port_number) }
+
+      before do
+        @clients.push(client1)
+        @server.accept_new_client('Player 1')
+      end
+
+      it 'returns nil' do
+        expect(@server.create_game_if_possible).to eq nil
+      end
+    end
+
+    context 'when there are two players' do
+      let(:client1) { MockFishSocketClient.new(@server.port_number) }
+      let(:client2) { MockFishSocketClient.new(@server.port_number) }
+
+      before do
+        @clients.push(client1)
+        @server.accept_new_client('Player 1')
+        @clients.push(client2)
+        @server.accept_new_client('Player 2')
+      end
+
+      it 'sends a ready message to each client' do
+        @server.create_game_if_possible
+        expect(client1.capture_output).to match (/ready/i)
+        expect(client2.capture_output).to match (/ready/i)
+      end
     end
   end
 end
