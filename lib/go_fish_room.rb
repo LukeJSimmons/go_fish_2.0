@@ -41,7 +41,7 @@ class GoFishRoom
       card_request,
       game.get_results(target, card_request)
     ) if target && card_request
-    display_results if !displayed_results && target && card_request
+    display_results(results) if !displayed_results && target && card_request
     game.deck.draw_card
     reset_state if finished_round
   end
@@ -79,8 +79,8 @@ class GoFishRoom
     nil
   end
 
-  def display_results
-    current_user.client.puts "#{current_user.player.name} requested #{card_request} from #{target}"
+  def display_results(results)
+    current_user.client.puts "#{results.current_player.name} requested #{results.card_request} from #{results.target}"
     self.displayed_results = true
     self.finished_round = true
   end

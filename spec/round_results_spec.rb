@@ -1,7 +1,7 @@
 require 'round_results'
 
 describe RoundResults do
-  let(:results) { RoundResults.new('player','target','rank',[]) }
+  let(:results) { RoundResults.new('player','target','card_request',[]) }
 
   it 'has a current_player' do
     expect(results).to respond_to :current_player
@@ -11,8 +11,8 @@ describe RoundResults do
     expect(results).to respond_to :target
   end
 
-  it 'has a rank' do
-    expect(results).to respond_to :rank
+  it 'has a card_request' do
+    expect(results).to respond_to :card_request
   end
 
   it 'has cards' do
