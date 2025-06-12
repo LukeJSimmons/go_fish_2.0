@@ -1,3 +1,5 @@
+require_relative 'card'
+
 class Deck
   attr_reader :cards
 
@@ -16,6 +18,10 @@ class Deck
   private
 
   def get_cards
-    Array.new(52, 'A')
+    Card::RANKS.flat_map do |rank|
+      Card::SUITS.map do |suit|
+        Card.new(rank, suit)
+      end
+    end
   end
 end

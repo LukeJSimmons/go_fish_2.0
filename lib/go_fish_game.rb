@@ -34,7 +34,7 @@ class GoFishGame
   def deal_cards
     players.each do |player|
       7.times do
-        player.hand << Card.new('A')
+        player.hand << Card.new('A','H')
       end
     end
   end

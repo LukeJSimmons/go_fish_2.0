@@ -10,6 +10,10 @@ describe Deck do
     expect(deck.cards.count).to eq 52
   end
 
+  it 'has 4 cards for every rank' do
+    expect(deck.cards.group_by(&:rank).all? { |_, cards| cards.count == 4 }).to eq true
+  end
+
   describe '#draw_card' do
     it 'removes a card from cards' do
       expect {

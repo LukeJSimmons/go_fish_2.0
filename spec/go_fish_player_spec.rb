@@ -26,7 +26,7 @@ describe GoFishPlayer do
 
       context 'when hand does contain card' do
         it 'returns true' do
-            player.hand = [Card.new('A')]
+            player.hand = [Card.new('A','H')]
           expect(player.has_card_of_rank?('A')).to eq true
         end
       end
