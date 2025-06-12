@@ -3,7 +3,7 @@ require_relative 'go_fish_player'
 
 class GoFishRoom
   attr_reader :users
-  attr_accessor :game, :displayed_hand, :asked_for_target, :target, :asked_for_request, :card_request, :displayed_results
+  attr_accessor :game, :displayed_hand, :asked_for_target, :target, :asked_for_request, :card_request, :displayed_results, :finished_round
   
   def initialize(users)
     @users = users
@@ -15,6 +15,7 @@ class GoFishRoom
     @asked_for_request = false
     @card_request = nil
     @displayed_results = false
+    @finsihed_round = false
   end
 
   def create_game
@@ -34,6 +35,7 @@ class GoFishRoom
     self.target = get_target unless target
     self.card_request = get_card_request if !card_request && target
     display_results if !displayed_results && target && card_request
+    reset_state if finished_round
   end
 
   private
@@ -66,6 +68,17 @@ class GoFishRoom
   def display_results
     current_user.client.puts "#{current_user.player.name} requested #{card_request} from #{target}"
     self.displayed_results = true
+    self.finished_round = true
+  end
+
+  def reset_state
+    self.displayed_hand = false
+    self.asked_for_target = false
+    self.target = nil
+    self.asked_for_request = false
+    self.card_request = nil
+    self.displayed_results = false
+    self.finished_round = false
   end
 
   def get_client_input(client)

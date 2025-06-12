@@ -70,13 +70,6 @@ describe GoFishRoom do
         room.run_round
         expect(client1.capture_output).to include input
       end
-
-      it 'sets target to inputted target' do
-        input = "joe"
-        client1.provide_input(input)
-        room.run_round
-        expect(room.target).to eq input
-      end
     end
 
     describe 'getting card request' do
@@ -96,13 +89,6 @@ describe GoFishRoom do
         room.run_round
         expect(client1.capture_output).to include input
       end
-
-      it 'sets card_request to inputted card request' do
-        input = "A"
-        client1.provide_input(input)
-        room.run_round
-        expect(room.card_request).to eq input
-      end
     end
 
     describe 'displaying results' do
@@ -115,6 +101,56 @@ describe GoFishRoom do
       it 'displays target and card_request' do
         room.run_round
         expect(client1.capture_output).to include "Player 1 requested A from joe"
+      end
+    end
+
+    describe 'resets round state' do
+      context 'when round was not finished' do
+        before do
+          client1.provide_input("joe")
+          room.run_round
+        end
+        
+        it 'does not reset the state' do
+          expect(room.displayed_hand).to eq true
+        end
+      end
+
+      context 'when round was fully played' do
+        before do
+          client1.provide_input("joe")
+          room.run_round
+          client1.provide_input("A")
+          room.run_round
+        end
+
+        it 'sets displayed_hand to false' do
+          expect(room.displayed_hand).to eq false
+        end
+
+        it 'sets asked_for_target to false' do
+          expect(room.asked_for_target).to eq false
+        end
+
+        it 'sets target to nil' do
+          expect(room.target).to eq nil
+        end
+
+        it 'sets asked_for_request to false' do
+          expect(room.asked_for_request).to eq false
+        end
+
+        it 'sets card_request to nil' do
+          expect(room.card_request).to eq nil
+        end
+
+        it 'sets displayed_results to false' do
+          expect(room.displayed_results).to eq false
+        end
+
+        it 'sets finished_round to false' do
+          expect(room.finished_round).to eq false
+        end
       end
     end
   end
