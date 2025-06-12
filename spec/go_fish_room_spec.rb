@@ -51,6 +51,11 @@ describe GoFishRoom do
       room.run_game
       expect(client1.capture_output).to match (/requested/i)
     end
+
+    it 'displays the winner' do
+      room.run_game
+      expect(client1.capture_output).to match (/winner/i)
+    end
   end
 
   describe '#run_round' do
