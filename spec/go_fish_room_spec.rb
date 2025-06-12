@@ -69,17 +69,33 @@ describe GoFishRoom do
 
     describe 'getting target' do
       it 'asks for a target' do
-        input = "joe"
+        input = "Player 2"
         client1.provide_input(input)
         room.run_round
         expect(client1.capture_output).to match (/target/i)
       end
 
       it 'displays the inputted target back' do
-        input = "joe"
+        input = "Player 2"
         client1.provide_input(input)
         room.run_round
         expect(client1.capture_output).to include input
+      end
+
+      context 'when input is invalid' do
+        it 'displays error message if input is not a player' do
+          input = "joe"
+          client1.provide_input(input)
+          room.run_round
+          expect(client1.capture_output).to match (/invalid/i)
+        end
+
+        it 'displays error message if input is the current_player' do
+          input = "Player 1"
+          client1.provide_input(input)
+          room.run_round
+          expect(client1.capture_output).to match (/invalid/i)
+        end
       end
     end
 

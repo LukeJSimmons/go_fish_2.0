@@ -12,12 +12,20 @@ class GoFishGame
     players.first
   end
 
+  def current_opponents
+    players.select { |player| player != current_player }
+  end
+
   def start
     deal_cards
   end
 
   def winner
     players.first if deck.empty?
+  end
+
+  def has_opponent_with_name?(name)
+    current_opponents.any? { |opponent| opponent.name == name }
   end
 
   private

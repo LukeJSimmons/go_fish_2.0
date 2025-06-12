@@ -38,4 +38,22 @@ describe GoFishGame do
       end
     end
   end
+
+  describe '#has_opponent_with_name?' do
+    context 'when game does have an opponent with name' do
+      let(:game) { GoFishGame.new([GoFishPlayer.new('Player 1'),GoFishPlayer.new('Player 2')]) }
+
+      it 'returns true' do
+        expect(game.has_opponent_with_name?('Player 2')).to eq true
+      end
+    end
+
+    context 'when game does not have an opponent with name' do
+      let(:game) { GoFishGame.new([GoFishPlayer.new('Player 1'),GoFishPlayer.new('Player 2')]) }
+
+      it 'returns false' do
+        expect(game.has_opponent_with_name?('Player 22')).to eq false
+      end
+    end
+  end
 end
