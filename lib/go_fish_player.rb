@@ -8,7 +8,7 @@ class GoFishPlayer
   end
 
   def display_hand
-    hand.join(' ')
+    hand.map(&:rank).join(' ')
   end
 
   def has_card_of_rank?(rank)

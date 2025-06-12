@@ -54,9 +54,11 @@ class GoFishRoom
     current_user.client.puts "Input your target:" unless asked_for_target
     self.asked_for_target = true
     target = get_client_input(current_user.client)
-    return current_user.client.puts "Invalid input:" unless game.has_opponent_with_name?(target)
     current_user.client.puts target if target
-    target
+    return target if game.has_opponent_with_name?(target)
+
+    current_user.client.puts "Invalid input:" if target
+    nil
   end
 
   def get_card_request
@@ -75,7 +77,7 @@ class GoFishRoom
   end
 
   def reset_state
-    # self.displayed_hand = false
+    self.displayed_hand = false
     self.asked_for_target = false
     self.target = nil
     self.asked_for_request = false
