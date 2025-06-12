@@ -39,4 +39,12 @@ describe GoFishRoom do
       expect(room.game).to respond_to :deck
     end
   end
+
+  describe '#run_round' do
+    it 'displays hand to current_player' do
+      room.run_round
+      expect(client1.capture_output).to include room.users.first.player.hand.join(' ')
+      expect(client2.capture_output).to_not include room.users.first.player.hand.join(' ')
+    end
+  end
 end
