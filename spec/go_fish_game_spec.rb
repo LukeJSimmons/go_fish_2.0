@@ -25,8 +25,17 @@ describe GoFishGame do
   end
 
   describe '#winner' do
-    it 'returns a player' do
-      expect(game.winner).to respond_to :name
+    context 'when deck is empty' do
+      it 'returns a player' do
+        game.deck.cards.clear
+        expect(game.winner).to respond_to :name
+      end
+    end
+
+    context 'when deck is not empty' do
+      it 'returns nil' do
+        expect(game.winner).to eq nil
+      end
     end
   end
 end
