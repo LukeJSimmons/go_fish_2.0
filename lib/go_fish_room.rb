@@ -15,7 +15,7 @@ class GoFishRoom
     @asked_for_request = false
     @card_request = nil
     @displayed_results = false
-    @finsihed_round = false
+    @finished_round = false
   end
 
   def create_game
@@ -65,9 +65,11 @@ class GoFishRoom
     current_user.client.puts "Input your card request:" unless asked_for_request
     self.asked_for_request = true
     card_request = get_client_input(current_user.client)
-    return unless current_user.player.has_card_of_rank?(card_request)
     current_user.client.puts card_request if card_request
-    card_request
+    return card_request if current_user.player.has_card_of_rank?(card_request)
+    
+    current_user.client.puts "Invalid input:" if card_request
+    nil
   end
 
   def display_results
