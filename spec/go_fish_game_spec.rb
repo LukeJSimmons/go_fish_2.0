@@ -2,7 +2,7 @@ require 'go_fish_game'
 require 'go_fish_player'
 
 describe GoFishGame do
-  let(:game) { GoFishGame.new([GoFishPlayer.new('Player')]) }
+  let(:game) { GoFishGame.new([GoFishPlayer.new('Player 1'),GoFishPlayer.new('Player 2')]) }
   it 'has a deck' do
     expect(game).to respond_to :deck
   end
@@ -20,7 +20,13 @@ describe GoFishGame do
   describe '#start' do
     it 'deals cards to each player' do
       game.start
-      expect(game.players.all? { |player| player.hand.count >= 7 }).to eq true
+      expect(game.players.all? { |player| player.hand.count >= GoFishGame::BASE_HAND_SIZE }).to eq true
+    end
+
+    it 'deals cards from deck' do
+      expect {
+        game.start
+      }.to change(game.deck.cards, :count).by (-14)
     end
   end
 

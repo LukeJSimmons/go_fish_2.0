@@ -3,6 +3,8 @@ require_relative 'card'
 
 class GoFishGame
   attr_reader :deck, :players
+
+  BASE_HAND_SIZE = 7
   
   def initialize(players)
     @deck = Deck.new
@@ -33,8 +35,8 @@ class GoFishGame
 
   def deal_cards
     players.each do |player|
-      7.times do
-        player.hand << Card.new('A','H')
+      BASE_HAND_SIZE.times do
+        player.hand << deck.draw_card
       end
     end
   end
