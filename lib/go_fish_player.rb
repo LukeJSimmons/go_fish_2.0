@@ -14,4 +14,8 @@ class GoFishPlayer
   def has_card_of_rank?(rank)
     hand.map(&:rank).include? rank
   end
+
+  def add_card(card)
+    hand.unshift(card)
+  end
 end

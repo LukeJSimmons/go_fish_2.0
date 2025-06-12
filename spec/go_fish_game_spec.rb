@@ -1,5 +1,6 @@
 require 'go_fish_game'
 require 'go_fish_player'
+require 'card'
 
 describe GoFishGame do
   let(:game) { GoFishGame.new([GoFishPlayer.new('Player 1'),GoFishPlayer.new('Player 2')]) }
@@ -59,6 +60,39 @@ describe GoFishGame do
 
       it 'returns false' do
         expect(game.has_opponent_with_name?('Player 22')).to eq false
+      end
+    end
+  end
+
+  describe '#get_results' do
+    let(:player1) { game.players.first }
+    let(:player2) { game.players.last }
+
+    before do
+      game.start
+    end
+
+    context 'when target has requested card' do
+      let(:target) { game.players.last.name }
+      before do
+        player1.hand = [Card.new('A','H')]
+        player2.hand = [Card.new('A','C')]
+      end
+
+      it 'returns an array of matching cards' do
+        expect(game.get_results(target, 'A')).to eq [Card.new('A','C')]
+      end
+
+      it 'removes matching cards from target hand' do
+        expect {
+          game.get_results(target, 'A')
+        }.to change(player2.hand, :count).by (-1)
+      end
+
+      it 'adds matching cards to current_player hand' do
+        expect {
+          game.get_results(target, 'A')
+        }.to change(player1.hand, :count).by 1
       end
     end
   end

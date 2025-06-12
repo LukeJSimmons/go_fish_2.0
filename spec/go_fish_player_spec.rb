@@ -31,4 +31,16 @@ describe GoFishPlayer do
         end
       end
     end
+
+    describe '#add_card' do
+      before do
+        player.hand = [Card.new('A','H')]
+      end
+
+      it 'adds a card to the front of the array' do
+        new_card = Card.new('2','C')
+        player.add_card(new_card)
+        expect(player.hand.first).to eq new_card
+      end
+    end
 end

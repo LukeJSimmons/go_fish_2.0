@@ -1,5 +1,6 @@
 require_relative 'go_fish_game'
 require_relative 'go_fish_player'
+require_relative 'round_results'
 
 class GoFishRoom
   attr_reader :users
@@ -34,6 +35,12 @@ class GoFishRoom
     display_hand unless displayed_hand
     self.target = get_target unless target
     self.card_request = get_card_request if !card_request && target
+    results = RoundResults.new(
+      game.current_player,
+      target,
+      card_request,
+      game.get_results(target, card_request)
+    ) if target && card_request
     display_results if !displayed_results && target && card_request
     game.deck.draw_card
     reset_state if finished_round

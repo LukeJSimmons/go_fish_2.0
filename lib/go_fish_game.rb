@@ -23,6 +23,13 @@ class GoFishGame
     deal_cards
   end
 
+  def get_results(target, card_request)
+    target = players.find { |player| player.name == target }
+    matching_cards = target.hand.select { |card| card.rank == card_request }
+    move_cards_from_target_to_player(target, matching_cards)
+    matching_cards
+  end
+
   def winner
     players.first if deck.empty?
   end
@@ -39,5 +46,10 @@ class GoFishGame
         player.hand << deck.draw_card
       end
     end
+  end
+
+  def move_cards_from_target_to_player(target, matching_cards)
+    matching_cards.each { |card| target.hand.delete(card) }
+    matching_cards.each { |card| current_player.add_card(card) }
   end
 end
