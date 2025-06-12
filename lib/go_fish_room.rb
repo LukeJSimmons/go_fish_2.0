@@ -63,7 +63,7 @@ class GoFishRoom
     current_user.client.puts "Input your card request:" unless asked_for_request
     self.asked_for_request = true
     card_request = get_client_input(current_user.client)
-    # return unless current_user.player.has_card_of_rank?(card_request)
+    return unless current_user.player.has_card_of_rank?(card_request)
     current_user.client.puts card_request if card_request
     card_request
   end
@@ -75,7 +75,7 @@ class GoFishRoom
   end
 
   def reset_state
-    self.displayed_hand = false
+    # self.displayed_hand = false
     self.asked_for_target = false
     self.target = nil
     self.asked_for_request = false

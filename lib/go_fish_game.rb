@@ -1,4 +1,5 @@
 require_relative 'deck'
+require_relative 'card'
 
 class GoFishGame
   attr_reader :deck, :players
@@ -33,7 +34,7 @@ class GoFishGame
   def deal_cards
     players.each do |player|
       7.times do
-        player.hand << "card"
+        player.hand << Card.new('A')
       end
     end
   end

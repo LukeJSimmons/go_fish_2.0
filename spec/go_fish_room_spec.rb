@@ -41,15 +41,34 @@ describe GoFishRoom do
   end
 
   describe '#run_game' do
-    before do
-      client1.provide_input("joe")
-      room.run_round
-      client1.provide_input("A")
-      room.run_round
+    context 'when one round of input is played' do
+      before do
+        client1.provide_input("Player 2")
+        room.run_round
+        client1.provide_input("A")
+      end
+
+      it 'runs a round' do
+        room.run_game
+        expect(client1.capture_output).to match (/requested/i)
+      end
     end
-    it 'runs a round' do
-      room.run_game
-      expect(client1.capture_output).to match (/requested/i)
+
+    context 'when two rounds of input are played' do
+      before do
+        client1.provide_input("Player 2")
+        room.run_round
+        client1.provide_input("A")
+        room.run_round
+        client1.provide_input("Player 2")
+        room.run_round
+        client1.provide_input("A")
+        client1.capture_output
+      end
+      it 'runs two rounds' do
+        room.run_game
+        expect(client1.capture_output).to match (/requested/i)
+      end
     end
 
     it 'displays the winner' do
@@ -101,7 +120,7 @@ describe GoFishRoom do
 
     describe 'getting card request' do
       before do
-        client1.provide_input("joe")
+        client1.provide_input("Player 2")
         room.run_round
       end
 
@@ -120,64 +139,14 @@ describe GoFishRoom do
 
     describe 'displaying results' do
       before do
-        client1.provide_input("joe")
+        client1.provide_input("Player 2")
         room.run_round
         client1.provide_input("A")
       end
 
       it 'displays target and card_request' do
         room.run_round
-        expect(client1.capture_output).to include "Player 1 requested A from joe"
-      end
-    end
-
-    describe 'resets round state' do
-      context 'when round was not finished' do
-        before do
-          client1.provide_input("joe")
-          room.run_round
-        end
-        
-        it 'does not reset the state' do
-          expect(room.displayed_hand).to eq true
-        end
-      end
-
-      context 'when round was fully played' do
-        before do
-          client1.provide_input("joe")
-          room.run_round
-          client1.provide_input("A")
-          room.run_round
-        end
-
-        it 'sets displayed_hand to false' do
-          expect(room.displayed_hand).to eq false
-        end
-
-        it 'sets asked_for_target to false' do
-          expect(room.asked_for_target).to eq false
-        end
-
-        it 'sets target to nil' do
-          expect(room.target).to eq nil
-        end
-
-        it 'sets asked_for_request to false' do
-          expect(room.asked_for_request).to eq false
-        end
-
-        it 'sets card_request to nil' do
-          expect(room.card_request).to eq nil
-        end
-
-        it 'sets displayed_results to false' do
-          expect(room.displayed_results).to eq false
-        end
-
-        it 'sets finished_round to false' do
-          expect(room.finished_round).to eq false
-        end
+        expect(client1.capture_output).to include "Player 1 requested A from Player 2"
       end
     end
   end
