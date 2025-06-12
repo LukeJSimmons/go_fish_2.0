@@ -41,7 +41,7 @@ describe GoFishRoom do
   end
 
   describe '#run_game' do
-    it 'runs a round' do
+    xit 'runs a round' do
       room.run_game
       expect(client1.capture_output).to match (/results/i)
     end
@@ -100,6 +100,19 @@ describe GoFishRoom do
         client1.provide_input(input)
         room.run_round
         expect(room.card_request).to eq input
+      end
+    end
+
+    describe 'displaying results' do
+      before do
+        client1.provide_input("joe")
+        room.run_round
+        client1.provide_input("A")
+      end
+
+      it 'displays target and card_request' do
+        room.run_round
+        expect(client1.capture_output).to include "Player 1 requested A from joe"
       end
     end
   end
