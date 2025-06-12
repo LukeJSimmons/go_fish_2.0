@@ -1,8 +1,10 @@
+require_relative 'deck'
+
 class GoFishGame
   attr_reader :deck, :players
   
   def initialize(players)
-    @deck = nil
+    @deck = Deck.new
     @players = players
   end
 
@@ -12,6 +14,10 @@ class GoFishGame
 
   def start
     deal_cards
+  end
+
+  def winner
+    players.first if deck.empty?
   end
 
   private

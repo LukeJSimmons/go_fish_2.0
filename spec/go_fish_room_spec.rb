@@ -41,9 +41,15 @@ describe GoFishRoom do
   end
 
   describe '#run_game' do
-    xit 'runs a round' do
+    before do
+      client1.provide_input("joe")
+      room.run_round
+      client1.provide_input("A")
+      room.run_round
+    end
+    it 'runs a round' do
       room.run_game
-      expect(client1.capture_output).to match (/results/i)
+      expect(client1.capture_output).to match (/requested/i)
     end
   end
 

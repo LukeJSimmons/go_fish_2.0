@@ -23,4 +23,10 @@ describe GoFishGame do
       expect(game.players.all? { |player| player.hand.count >= 7 }).to eq true
     end
   end
+
+  describe '#winner' do
+    it 'returns a player' do
+      expect(game.winner).to respond_to :name
+    end
+  end
 end

@@ -25,7 +25,7 @@ class GoFishRoom
   end
 
   def run_game
-    loop do
+    until game.winner
       run_round
     end
   end
@@ -35,6 +35,7 @@ class GoFishRoom
     self.target = get_target unless target
     self.card_request = get_card_request if !card_request && target
     display_results if !displayed_results && target && card_request
+    game.deck.draw_card
     reset_state if finished_round
   end
 
