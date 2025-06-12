@@ -58,6 +58,8 @@ describe GoFishRoom do
 
     describe 'getting target' do
       it 'asks for a target' do
+        input = "joe"
+        client1.provide_input(input)
         room.run_round
         expect(client1.capture_output).to match (/target/i)
       end
