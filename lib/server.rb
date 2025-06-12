@@ -57,8 +57,7 @@ class Server
 
   def request_name_from_client(client)
     client.puts "Please input your name:"
-    name = nil
-    name = get_client_input(client) until name
+    name = get_client_input(client)
     client.puts "Hey #{name}!"
     name
   end
@@ -67,7 +66,8 @@ class Server
     sleep(0.1)
     begin
       client.read_nonblock(1000).chomp
-    rescue IO::WaitReadable
+    rescue IO::WaitReadable, Errno::EAGAIN
+      retry
     end
   end
 end
