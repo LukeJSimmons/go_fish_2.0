@@ -67,20 +67,16 @@ describe GoFishGame do
   describe '#get_results' do
     let(:player1) { game.players.first }
     let(:player2) { game.players.last }
+    let(:target) { game.players.last.name }
 
     before do
       game.start
     end
 
     context 'when target has requested card' do
-      let(:target) { game.players.last.name }
       before do
         player1.hand = [Card.new('A','H')]
         player2.hand = [Card.new('A','C')]
-      end
-
-      it 'returns an array of matching cards' do
-        expect(game.get_results(target, 'A')).to eq [Card.new('A','C')]
       end
 
       it 'removes matching cards from target hand' do
@@ -94,6 +90,10 @@ describe GoFishGame do
           game.get_results(target, 'A')
         }.to change(player1.hand, :count).by 1
       end
+    end
+
+    it 'returns a round_result' do
+      expect(game.get_results(target, 'A')).to respond_to :current_player
     end
   end
 end

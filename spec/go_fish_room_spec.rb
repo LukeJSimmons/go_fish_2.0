@@ -142,10 +142,11 @@ describe GoFishRoom do
         client1.provide_input("Player 2")
         room.run_round
         client1.provide_input("A")
+        room.run_round
       end
 
       it 'displays target and card_request' do
-        room.run_round
+        
         expect(client1.capture_output).to include "Player 1 requested A from Player 2"
       end
     end

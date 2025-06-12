@@ -1,5 +1,6 @@
 require_relative 'deck'
 require_relative 'card'
+require_relative 'round_result'
 
 class GoFishGame
   attr_reader :deck, :players
@@ -25,9 +26,13 @@ class GoFishGame
 
   def get_results(target, card_request)
     target = players.find { |player| player.name == target }
+
     matching_cards = target.hand.select { |card| card.rank == card_request }
     move_cards_from_target_to_player(target, matching_cards)
-    RoundResults.new(current_player:, target:, card_request:, matching_cards:, fished_card:, swapped_turns: ) 
+
+    fished_card = go_fish if matching_cards.empty?
+
+    RoundResult.new(current_player:, target:, card_request:, matching_cards:, fished_card:) 
   end
 
   def winner
@@ -51,5 +56,9 @@ class GoFishGame
   def move_cards_from_target_to_player(target, matching_cards)
     matching_cards.each { |card| target.hand.delete(card) }
     matching_cards.each { |card| current_player.add_card(card) }
+  end
+
+  def go_fish
+    return
   end
 end

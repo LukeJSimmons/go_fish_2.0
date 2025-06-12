@@ -1,6 +1,6 @@
 require_relative 'go_fish_game'
 require_relative 'go_fish_player'
-require_relative 'round_results'
+require_relative 'round_result'
 
 class GoFishRoom
   attr_reader :users
@@ -25,11 +25,10 @@ class GoFishRoom
 
   def run_round
     display_hand unless displayed_hand
-    get_target
+    get_target unless target
     get_card_request if target
     results = game.get_results(target, card_request) if target && card_request
-    display_results(results) if !displayed_results && target && card_request
-    game.deck.draw_card
+    display_results(results) if !displayed_results && results
     reset_state if finished_round
   end
 
@@ -67,7 +66,7 @@ class GoFishRoom
   end
 
   def display_results(results)
-    current_user.client.puts "#{results.current_player.name} requested #{results.card_request} from #{results.target}"
+    current_user.client.puts "#{results.current_player.name} requested #{results.card_request} from #{results.target.name}"
     self.displayed_results = true
     self.finished_round = true
   end
