@@ -9,14 +9,6 @@ class GoFishRoom
   def initialize(users)
     @users = users
     @game = create_game
-
-    @displayed_hand = false
-    @asked_for_target = false
-    @target = nil
-    @asked_for_request = false
-    @card_request = nil
-    @displayed_results = false
-    @finished_round = false
   end
 
   def create_game
@@ -33,14 +25,9 @@ class GoFishRoom
 
   def run_round
     display_hand unless displayed_hand
-    self.target = get_target unless target
-    self.card_request = get_card_request if !card_request && target
-    results = RoundResults.new(
-      game.current_player,
-      target,
-      card_request,
-      game.get_results(target, card_request)
-    ) if target && card_request
+    get_target
+    get_card_request if target
+    results = game.get_results(target, card_request) if target && card_request
     display_results(results) if !displayed_results && target && card_request
     game.deck.draw_card
     reset_state if finished_round
@@ -60,23 +47,23 @@ class GoFishRoom
   def get_target
     current_user.client.puts "Input your target:" unless asked_for_target
     self.asked_for_target = true
-    target = get_client_input(current_user.client)
+    self.target = get_client_input(current_user.client)
     current_user.client.puts target if target
     return target if game.has_opponent_with_name?(target)
 
     current_user.client.puts "Invalid input:" if target
-    nil
+    self.target = nil
   end
 
   def get_card_request
     current_user.client.puts "Input your card request:" unless asked_for_request
     self.asked_for_request = true
-    card_request = get_client_input(current_user.client)
+    self.card_request = get_client_input(current_user.client)
     current_user.client.puts card_request if card_request
     return card_request if current_user.player.has_card_of_rank?(card_request)
     
     current_user.client.puts "Invalid input:" if card_request
-    nil
+    self.card_request = nil
   end
 
   def display_results(results)

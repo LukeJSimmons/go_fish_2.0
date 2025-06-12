@@ -15,7 +15,11 @@ describe RoundResults do
     expect(results).to respond_to :card_request
   end
 
-  it 'has cards' do
-    expect(results).to respond_to :cards
+  it 'has matching_cards' do
+    expect(results).to respond_to :matching_cards
+  end
+
+  it 'has a fished_card' do
+    expect(results).to respond_to :fished_card
   end
 end

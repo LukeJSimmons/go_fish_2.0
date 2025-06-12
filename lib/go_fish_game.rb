@@ -27,7 +27,7 @@ class GoFishGame
     target = players.find { |player| player.name == target }
     matching_cards = target.hand.select { |card| card.rank == card_request }
     move_cards_from_target_to_player(target, matching_cards)
-    matching_cards
+    RoundResults.new(current_player:, target:, card_request:, matching_cards:, fished_card:, swapped_turns: ) 
   end
 
   def winner
