@@ -1,5 +1,6 @@
 require 'go_fish_game'
 require 'go_fish_player'
+require 'deck'
 require 'card'
 
 describe GoFishGame do
@@ -41,6 +42,13 @@ describe GoFishGame do
       expect {
         game.start
       }.to change(game.deck.cards, :count).by (-14)
+    end
+
+    it 'shuffles the deck' do
+      unshuffled_deck = Deck.new
+      expect(game.deck).to eq(unshuffled_deck)
+      game.start
+      expect(game.deck).to_not eq (unshuffled_deck)
     end
   end
 

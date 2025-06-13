@@ -9,7 +9,7 @@ class GoFishPlayer
   end
 
   def display_hand
-    hand.map(&:rank).join(' ')
+    hand.map(&:rank).sort.join(' ')
   end
 
   def has_card_of_rank?(rank)

@@ -32,4 +32,13 @@ describe Deck do
       expect(deck.empty?).to eq true
     end
   end
+
+  describe '#shuffle!' do
+    it 'shuffles the deck' do
+      unshuffled_deck = Deck.new
+      expect(unshuffled_deck).to eq(Deck.new)
+      shuffled_deck = unshuffled_deck.shuffle!.dup
+      expect(shuffled_deck).to_not eq (unshuffled_deck)
+    end
+  end
 end

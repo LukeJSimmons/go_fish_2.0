@@ -15,6 +15,14 @@ class Deck
     cards.empty?
   end
 
+  def shuffle!
+    cards.shuffle!
+  end
+
+  def ==(other_deck)
+    cards == other_deck.cards
+  end
+
   private
 
   def get_cards

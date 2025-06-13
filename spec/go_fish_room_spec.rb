@@ -83,16 +83,16 @@ describe GoFishRoom do
         room.run_round
         expect(client2.capture_output).to match (/waiting/i)
         expect(client1.capture_output).to_not match (/waiting/i)
-        
+
         expect(client2.capture_output).to_not match (/waiting/i)
       end
     end
 
     describe 'displaying hand' do
-      it 'displays hand to current_player' do
+      it 'displays sorted hand to current_player' do
         room.run_round
-        expect(client1.capture_output).to include room.users.first.player.hand.map(&:rank).join(' ')
-        expect(client2.capture_output).to_not include room.users.first.player.hand.map(&:rank).join(' ')
+        expect(client1.capture_output).to include room.users.first.player.hand.map(&:rank).sort.join(' ')
+        expect(client2.capture_output).to_not include room.users.first.player.hand.map(&:rank).sort.join(' ')
       end
     end
 

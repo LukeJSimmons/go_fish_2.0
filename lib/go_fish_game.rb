@@ -23,6 +23,7 @@ class GoFishGame
   end
 
   def start
+    deck.shuffle!
     deal_cards
   end
 
