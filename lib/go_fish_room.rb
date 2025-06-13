@@ -4,7 +4,7 @@ require_relative 'round_result'
 
 class GoFishRoom
   attr_reader :users
-  attr_accessor :game, :displayed_waiting, :displayed_hand, :asked_for_target, :target, :asked_for_request, :card_request, :displayed_results, :finished_round
+  attr_accessor :game, :displayed_waiting, :displayed_start_info, :asked_for_target, :target, :asked_for_request, :card_request, :displayed_results, :finished_round
   
   def initialize(users)
     @users = users
@@ -26,7 +26,7 @@ class GoFishRoom
 
   def run_round
     display_waiting unless displayed_waiting
-    display_hand unless displayed_hand
+    display_start_info unless displayed_start_info
     get_target unless target
     get_card_request if target
     results = game.get_results(target, card_request) if target && card_request
@@ -49,9 +49,10 @@ class GoFishRoom
     self.displayed_waiting = true
   end
 
-  def display_hand
+  def display_start_info
      current_user.client.puts "Your hand is, #{current_user.player.display_hand}"
-     self.displayed_hand = true
+     current_user.client.puts "Your opponents are, #{game.current_opponents.map(&:name).join(' ')}"
+     self.displayed_start_info = true
   end
 
   def get_target
@@ -85,7 +86,7 @@ class GoFishRoom
 
   def reset_state
     self.displayed_waiting = false
-    self.displayed_hand = false
+    self.displayed_start_info = false
     self.asked_for_target = false
     self.target = nil
     self.asked_for_request = false

@@ -105,6 +105,14 @@ describe GoFishRoom do
       end
     end
 
+    describe 'displaying opponents' do
+      it 'displays all opponents to current_player' do
+        room.run_round
+        expect(client1.capture_output).to include "Your opponents are, #{room.game.current_opponents.map(&:name).join(' ')}"
+        expect(client2.capture_output).to_not include room.game.current_opponents.map(&:name).join(' ')
+      end
+    end
+
     describe 'getting target' do
       it 'asks for a target' do
         input = "Player 2"
