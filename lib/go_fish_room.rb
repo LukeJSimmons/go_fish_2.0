@@ -65,8 +65,8 @@ class GoFishRoom
     self.card_request = nil
   end
 
-  def display_results(results)
-    current_user.client.puts "#{results.current_player.name} requested #{results.card_request} from #{results.target.name}"
+  def display_results(result)
+    current_user.client.puts result.display_result_message_to(:current_player)
     self.displayed_results = true
     self.finished_round = true
   end

@@ -120,6 +120,8 @@ describe GoFishRoom do
 
     describe 'getting card request' do
       before do
+        room.users.first.player.hand = [Card.new('A','H')]
+        room.users.last.player.hand = [Card.new('A','S')]
         client1.provide_input("Player 2")
         room.run_round
       end
@@ -139,6 +141,8 @@ describe GoFishRoom do
 
     describe 'displaying results' do
       before do
+        room.users.first.player.hand = [Card.new('A','H')]
+        room.users.last.player.hand = [Card.new('A','S')]
         client1.provide_input("Player 2")
         room.run_round
         client1.provide_input("A")
@@ -146,8 +150,7 @@ describe GoFishRoom do
       end
 
       it 'displays target and card_request' do
-        
-        expect(client1.capture_output).to include "Player 1 requested A from Player 2"
+        expect(client1.capture_output).to include "You took 1 A from Player 2"
       end
     end
   end

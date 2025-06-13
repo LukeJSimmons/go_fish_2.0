@@ -17,7 +17,7 @@ class RoundResult
   private
 
   def target_has_request(player)
-    return "You took #{matching_cards.count} #{card_request}#{multiple_cards?} #{target.name}" if player == :current_player
+    return "You took #{matching_cards.count} #{card_request}#{multiple_cards?} from #{target.name}" if player == :current_player
     "#{current_player.name} took #{matching_cards.count} #{card_request}#{multiple_cards?} #{target.name}"
   end
 
