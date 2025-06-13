@@ -44,8 +44,8 @@ class GoFishGame
 
   def winner
     player_books_counts = players.map { |player| player.books.count }
-    
-    players[player_books_counts.find_index(player_books_counts.max)] if deck.empty?
+
+    players[player_books_counts.find_index(player_books_counts.max)] if deck.empty? && players.all? { |player| player.hand.empty? }
   end
 
   def has_opponent_with_name?(name)

@@ -43,12 +43,12 @@ describe GoFishRoom do
   describe '#run_game' do
     context 'when one round of input is played' do
       before do
-        room.game.deck.cards = [Card.new('A','H')]
-        room.game.current_player.hand = [Card.new('8','D')]
-        room.game.current_opponents.first.hand = [Card.new('3','S')]
+        room.game.deck.cards = []
+        room.game.current_player.hand = [Card.new('A','D'),Card.new('A','C'),Card.new('A','H')]
+        room.game.current_opponents.first.hand = [Card.new('A','S')]
         client1.provide_input("Player 2")
         room.run_round
-        client1.provide_input("8")
+        client1.provide_input("A")
         room.run_game
       end
 
@@ -59,16 +59,16 @@ describe GoFishRoom do
 
     context 'when two rounds of input are played' do
       before do
-        room.game.deck.cards = [Card.new('A','H'),Card.new('A','C')]
-        room.game.current_player.hand = [Card.new('8','D')]
-        room.game.current_opponents.first.hand = [Card.new('3','S')]
+        room.game.deck.cards = [Card.new('8','S')]
+        room.game.players.first.hand = [Card.new('A','H'),Card.new('A','C'),Card.new('A','D'),Card.new('8','H'),Card.new('8','C'),Card.new('8','D')]
+        room.game.players[1].hand = [Card.new('A','S')]
         client1.provide_input("Player 2")
         room.run_round
         client1.provide_input("8")
         room.run_round
-        client2.provide_input("Player 1")
+        client1.provide_input("Player 2")
         room.run_round
-        client2.provide_input("3")
+        client1.provide_input("A")
         room.run_game
       end
 
@@ -78,7 +78,9 @@ describe GoFishRoom do
     end
 
     it 'displays the winner' do
-      allow(room.game).to receive(:winner).and_return(room.game.current_player)
+      room.game.deck.cards.clear
+      room.game.players.first.hand.clear
+      room.game.players[1].hand.clear
       room.run_game
       expect(client1.capture_output).to match (/win/i)
     end

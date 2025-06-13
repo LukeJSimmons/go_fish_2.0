@@ -53,10 +53,18 @@ describe GoFishGame do
   end
 
   describe '#winner' do
-    context 'when deck is empty' do
+    before do
+      game.start
+    end
+
+    context 'when deck is empty and hands are empty' do
+      before do
+        game.deck.cards.clear
+          game.players.each { |player| player.hand.clear }
+      end
+
       context 'when player 1 has the most books' do
         it 'returns player 1' do
-          game.deck.cards.clear
           game.players.first.books = [1]
           expect(game.winner.name).to eq 'Player 1'
         end
@@ -64,7 +72,6 @@ describe GoFishGame do
 
       context 'when player 2 has the most books' do
         it 'returns player 2' do
-          game.deck.cards.clear
           game.players[1].books = [1]
           expect(game.winner.name).to eq 'Player 2'
         end
