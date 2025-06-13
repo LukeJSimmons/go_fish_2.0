@@ -47,5 +47,31 @@ describe GoFishPlayer do
         new_card = Card.new('2','C')
         expect(player.add_card(new_card)).to eq new_card
       end
+
+      describe 'checks for a book' do
+        context 'when player does not have a book' do
+          before do
+            player.hand = [Card.new('A','H'),Card.new('A','D')]
+          end
+
+          it 'does not remove anything from the hand' do
+            expect {
+              player.add_card(Card.new('A','S'))
+            }.to change(player.hand, :count).by 1
+          end
+        end
+
+        context 'when player does have a book' do
+          before do
+            player.hand = [Card.new('A','H'),Card.new('A','D'),Card.new('A','C')]
+          end
+
+          it 'removes the book from the hand' do
+            expect {
+              player.add_card(Card.new('A','S'))
+            }.to change(player.hand, :count).by (-3)
+          end
+        end
+      end
     end
 end

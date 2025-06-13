@@ -34,7 +34,7 @@ describe GoFishGame do
   describe '#start' do
     it 'deals cards to each player' do
       game.start
-      expect(game.players.all? { |player| player.hand.count >= GoFishGame::BASE_HAND_SIZE }).to eq true
+      expect(game.players.all? { |player| player.hand.count == GoFishGame::BASE_HAND_SIZE || player.hand.count == GoFishGame::BASE_HAND_SIZE-4 }).to eq true
     end
 
     it 'deals cards from deck' do

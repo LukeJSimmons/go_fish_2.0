@@ -54,7 +54,7 @@ class GoFishGame
   def deal_cards
     players.each do |player|
       BASE_HAND_SIZE.times do
-        player.hand << deck.draw_card
+        player.add_card(deck.draw_card)
       end
     end
   end
