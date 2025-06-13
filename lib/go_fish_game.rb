@@ -4,16 +4,18 @@ require_relative 'round_result'
 
 class GoFishGame
   attr_reader :deck, :players
+  attr_accessor :round
 
   BASE_HAND_SIZE = 7
   
   def initialize(players)
     @deck = Deck.new
     @players = players
+    @round = 0
   end
 
   def current_player
-    players.first
+    players[round%players.count]
   end
 
   def current_opponents
@@ -32,7 +34,11 @@ class GoFishGame
 
     fished_card = go_fish if matching_cards.empty?
 
-    RoundResult.new(current_player:, target:, card_request:, matching_cards:, fished_card:) 
+    result = RoundResult.new(current_player:, target:, card_request:, matching_cards:, fished_card:)
+
+    self.round += 1 if fished_card && fished_card.rank != card_request
+
+    result
   end
 
   def winner

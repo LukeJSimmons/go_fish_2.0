@@ -16,6 +16,19 @@ describe GoFishGame do
     it 'returns a player' do
       expect(game.current_player).to respond_to :name
     end
+
+    context 'when it is the first round' do
+      it 'returns the first player' do
+        expect(game.current_player).to eq game.players.first
+      end
+    end
+
+    context 'when it is the second round' do
+      it 'returns the first player' do
+        game.round += 1
+        expect(game.current_player).to eq game.players[1]
+      end
+    end
   end
 
   describe '#start' do
@@ -102,6 +115,17 @@ describe GoFishGame do
         drawn_card = game.deck.cards.last
         game.get_results(target, 'A')
         expect(player1.hand.first).to eq drawn_card
+      end
+
+      context 'when drawn card is not the requested card' do
+        before do
+          game.deck.cards << Card.new('J','C')
+        end
+
+        it 'swaps current_player' do
+          game.get_results(target, 'A')
+          expect(game.current_player).to eq player2
+        end
       end
     end
 

@@ -78,6 +78,16 @@ describe GoFishRoom do
   end
 
   describe '#run_round' do
+    describe 'displaying waiting message' do
+      it 'display waiting message to current_opponents once' do
+        room.run_round
+        expect(client2.capture_output).to match (/waiting/i)
+        expect(client1.capture_output).to_not match (/waiting/i)
+        
+        expect(client2.capture_output).to_not match (/waiting/i)
+      end
+    end
+
     describe 'displaying hand' do
       it 'displays hand to current_player' do
         room.run_round
@@ -151,6 +161,7 @@ describe GoFishRoom do
 
       it 'displays target and card_request' do
         expect(client1.capture_output).to include "You requested A from Player 2"
+        expect(client2.capture_output).to include "Player 1 requested A from Player 2"
       end
     end
   end

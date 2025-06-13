@@ -4,7 +4,7 @@ require_relative 'round_result'
 
 class GoFishRoom
   attr_reader :users
-  attr_accessor :game, :displayed_hand, :asked_for_target, :target, :asked_for_request, :card_request, :displayed_results, :finished_round
+  attr_accessor :game, :displayed_waiting, :displayed_hand, :asked_for_target, :target, :asked_for_request, :card_request, :displayed_results, :finished_round
   
   def initialize(users)
     @users = users
@@ -24,6 +24,7 @@ class GoFishRoom
   end
 
   def run_round
+    display_waiting unless displayed_waiting
     display_hand unless displayed_hand
     get_target unless target
     get_card_request if target
@@ -36,6 +37,15 @@ class GoFishRoom
 
   def current_user
     users.find { |user| user.player == game.current_player }
+  end
+
+  def opponent_users
+    users.select { |user| user.player != game.current_player }
+  end
+
+  def display_waiting
+    opponent_users.each { |opponent| opponent.client.puts "Waiting for #{current_user.player.name} to finish their turn..." }
+    self.displayed_waiting = true
   end
 
   def display_hand
@@ -66,12 +76,14 @@ class GoFishRoom
   end
 
   def display_results(result)
-    current_user.client.puts result.display_result_message_to(:current_player)
+    users.find { |user| user.player == result.current_player }.client.puts result.display_result_message_to(:current_player)
+    users.select { |user| user.player != result.current_player }.each { |opponent| opponent.client.puts result.display_result_message_to(:opponent) }
     self.displayed_results = true
     self.finished_round = true
   end
 
   def reset_state
+    self.displayed_waiting = false
     self.displayed_hand = false
     self.asked_for_target = false
     self.target = nil
