@@ -17,5 +17,6 @@ class GoFishPlayer
 
   def add_card(card)
     hand.unshift(card)
+    card
   end
 end

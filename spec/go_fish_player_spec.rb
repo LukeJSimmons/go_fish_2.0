@@ -42,5 +42,10 @@ describe GoFishPlayer do
         player.add_card(new_card)
         expect(player.hand.first).to eq new_card
       end
+
+      it 'returns the added card' do
+        new_card = Card.new('2','C')
+        expect(player.add_card(new_card)).to eq new_card
+      end
     end
 end

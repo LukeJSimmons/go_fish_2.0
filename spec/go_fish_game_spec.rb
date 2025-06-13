@@ -92,6 +92,19 @@ describe GoFishGame do
       end
     end
 
+    context 'when target does not have requested card' do
+      before do
+        player1.hand = [Card.new('A','H')]
+        player2.hand = [Card.new('2','C')]
+      end
+
+      it 'adds a card to current_player hand from deck' do
+        drawn_card = game.deck.cards.last
+        game.get_results(target, 'A')
+        expect(player1.hand.first).to eq drawn_card
+      end
+    end
+
     it 'returns a round_result' do
       expect(game.get_results(target, 'A')).to respond_to :current_player
     end

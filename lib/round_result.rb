@@ -24,8 +24,7 @@ class RoundResult
   end
 
   def target_does_not_have_request(player)
-    return "but they didn't have any.\n#{go_fish}" if player == :current_player
-    "but they didn't have any."
+    "but they didn't have any.\n#{go_fish if player == :current_player}"
   end
 
   def go_fish

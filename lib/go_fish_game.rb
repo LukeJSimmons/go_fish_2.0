@@ -59,6 +59,6 @@ class GoFishGame
   end
 
   def go_fish
-    return
+    current_player.add_card(deck.draw_card)
   end
 end
