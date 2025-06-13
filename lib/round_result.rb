@@ -13,6 +13,7 @@ class RoundResult
     message = "#{player == :current_player ? "You" : current_player.name} requested #{card_request} from #{target.name},\n"
     message += target_has_request(player) unless matching_cards.empty?
     message += target_does_not_have_request(player) if matching_cards.empty?
+    message += player_got_book(player)
     message
   end
 
@@ -31,6 +32,11 @@ class RoundResult
     return "But you fished a #{fished_card.rank}!" if fished_card && fished_card.rank == card_request
     return "You fished a #{fished_card.rank}" if fished_card
     "The deck is empty!"
+  end
+
+  def player_got_book(player)
+    return "You got a book of As!" if current_player.books.any? { |book| book.first.rank == card_request || book.first.rank == fished_card.rank }
+    ""
   end
 
   def multiple_cards?

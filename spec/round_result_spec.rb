@@ -31,6 +31,10 @@ describe RoundResult do
         expect(result.display_result_message_to(:current_player)).to include "#{result.matching_cards.count}"
       end
 
+      it 'does not display book' do
+        expect(result.display_result_message_to(:current_player)).to_not include "You got a book of #{result.card_request}s!"
+      end
+
       context 'when target has multiple matching cards' do
         let(:result) { RoundResult.new(
           current_player: GoFishPlayer.new('Player 1'),
@@ -55,6 +59,26 @@ describe RoundResult do
       context 'when not displaying to current_player' do
         it 'displays in the 3rd person' do
           expect(result.display_result_message_to(:opponents)).to include "#{result.current_player.name}"
+        end
+      end
+
+      context 'when requested card made a book' do
+        let(:result) { RoundResult.new(
+          current_player: GoFishPlayer.new('Player 1'),
+          target: GoFishPlayer.new('Player 2'),
+          card_request: 'A',
+          matching_cards: [Card.new('A','C'),Card.new('A','S'),Card.new('A','D')],
+          fished_card: nil
+          )
+        }
+
+        before do
+          result.current_player.hand = [Card.new('A','H')]
+          result.matching_cards.each { |card| result.current_player.add_card(card) }
+        end
+
+        it 'displays book' do
+          expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.card_request}s!"
         end
       end
     end
@@ -102,6 +126,26 @@ describe RoundResult do
             expect(result.display_result_message_to(:opponents)).to_not include "fished a #{result.fished_card.rank}"
           end
         end
+
+        context 'when fished card made a book' do
+          let(:result) { RoundResult.new(
+            current_player: GoFishPlayer.new('Player 1'),
+            target: GoFishPlayer.new('Player 2'),
+            card_request: 'A',
+            matching_cards: [],
+            fished_card: Card.new('A','S')
+            )
+          }
+
+          before do
+            result.current_player.hand = [Card.new('A','H'),Card.new('A','D'),Card.new('A','C')]
+            result.current_player.add_card(result.fished_card)
+          end
+
+          it 'displays book' do
+            expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.card_request}s!"
+          end
+        end
       end
 
       context 'when fished card is requested card' do
@@ -116,6 +160,46 @@ describe RoundResult do
 
         it 'displays with !' do
           expect(result.display_result_message_to(:current_player)).to match (/!/i)
+        end
+
+        context 'when fished card made a book' do
+          let(:result) { RoundResult.new(
+            current_player: GoFishPlayer.new('Player 1'),
+            target: GoFishPlayer.new('Player 2'),
+            card_request: '2',
+            matching_cards: [],
+            fished_card: Card.new('A','S')
+            )
+          }
+
+          before do
+            result.current_player.hand = [Card.new('A','H'),Card.new('A','D'),Card.new('A','C'),Card.new('2','H')]
+            result.current_player.add_card(result.fished_card)
+          end
+
+          it 'displays book' do
+            expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.fished_card.rank}s!"
+          end
+
+          context 'when fished card made a book' do
+          let(:result) { RoundResult.new(
+            current_player: GoFishPlayer.new('Player 1'),
+            target: GoFishPlayer.new('Player 2'),
+            card_request: 'A',
+            matching_cards: [],
+            fished_card: Card.new('A','S')
+            )
+          }
+
+          before do
+            result.current_player.hand = [Card.new('A','H'),Card.new('A','D'),Card.new('A','C')]
+            result.current_player.add_card(result.fished_card)
+          end
+
+          it 'displays book' do
+            expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.card_request}s!"
+          end
+        end
         end
       end
     end
