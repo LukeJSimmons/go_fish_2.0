@@ -10,20 +10,28 @@ class RoundResult
   end
 
   def display_result_message_to(player)
-    return target_has_request(player) unless matching_cards.empty?
-    return target_does_not_have_request(player)
+    message = "#{player == :current_player ? "You" : current_player.name} requested #{card_request} from #{target.name},\n"
+    message += target_has_request(player) unless matching_cards.empty?
+    message += target_does_not_have_request(player) if matching_cards.empty?
+    message
   end
 
   private
 
   def target_has_request(player)
-    return "You took #{matching_cards.count} #{card_request}#{multiple_cards?} from #{target.name}" if player == :current_player
+    return "and you took #{matching_cards.count} #{card_request}#{multiple_cards?} from #{target.name}" if player == :current_player
     "#{current_player.name} took #{matching_cards.count} #{card_request}#{multiple_cards?} #{target.name}"
   end
 
   def target_does_not_have_request(player)
-    return "You requested #{card_request} from #{target.name}, but took nothing\nGo fish, you drew a #{fished_card.rank}" if player == :current_player
-    "#{current_player.name} requested #{card_request} from #{target.name}, but took nothing"
+    return "but they didn't have any.\n#{go_fish}" if player == :current_player
+    "but they didn't have any."
+  end
+
+  def go_fish
+    return "But you fished a #{fished_card.rank}!" if fished_card && fished_card.rank == card_request
+    return "You fished a #{fished_card.rank}" if fished_card
+    "The deck is empty!"
   end
 
   def multiple_cards?

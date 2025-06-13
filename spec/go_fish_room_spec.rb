@@ -150,7 +150,7 @@ describe GoFishRoom do
       end
 
       it 'displays target and card_request' do
-        expect(client1.capture_output).to include "You took 1 A from Player 2"
+        expect(client1.capture_output).to include "You requested A from Player 2"
       end
     end
   end

@@ -4,6 +4,19 @@ require 'card'
 
 describe RoundResult do
   describe '#display_result_message_to' do
+    let(:result) { RoundResult.new(
+      current_player: GoFishPlayer.new('Player 1'),
+      target: GoFishPlayer.new('Player 2'),
+      card_request: 'A',
+      matching_cards: [],
+      fished_card: nil
+      )
+    }
+
+    it 'displays card_request and target' do
+      expect(result.display_result_message_to(:current_player)).to include "You requested #{result.card_request} from #{result.target.name}"
+    end
+
     context 'when target has requested card' do
       let(:result) { RoundResult.new(
         current_player: GoFishPlayer.new('Player 1'),
@@ -13,14 +26,6 @@ describe RoundResult do
         fished_card: nil
         )
       }
-
-      it 'displays target' do
-        expect(result.display_result_message_to(:current_player)).to include result.target.name
-      end
-
-      it 'displays card_request' do
-        expect(result.display_result_message_to(:current_player)).to include result.card_request
-      end
 
       it 'displays how many cards you took' do
         expect(result.display_result_message_to(:current_player)).to include "#{result.matching_cards.count}"
@@ -74,11 +79,7 @@ describe RoundResult do
         end
 
         it 'displays that the target did not have the card request' do
-          expect(result.display_result_message_to(:current_player)).to match (/nothing/i)
-        end
-
-        it 'displays go fish' do
-          expect(result.display_result_message_to(:current_player)).to match (/go fish/i)
+          expect(result.display_result_message_to(:current_player)).to match (/didn't/i)
         end
 
         context 'when displaying to current_player' do
@@ -87,7 +88,7 @@ describe RoundResult do
           end
 
           it 'displays fished card' do
-            expect(result.display_result_message_to(:current_player)).to include "drew a #{result.fished_card.rank}"
+            expect(result.display_result_message_to(:current_player)).to include "fished a #{result.fished_card.rank}"
           end
         end
 
@@ -97,7 +98,7 @@ describe RoundResult do
           end
 
           it 'does not display drawn card' do
-            expect(result.display_result_message_to(:opponents)).to_not include "drew a #{result.fished_card.rank}"
+            expect(result.display_result_message_to(:opponents)).to_not include "fished a #{result.fished_card.rank}"
           end
         end
       end
