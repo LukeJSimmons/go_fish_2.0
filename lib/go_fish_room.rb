@@ -21,6 +21,7 @@ class GoFishRoom
     until game.winner
       run_round
     end
+    users.each { |user| user.client.puts "#{game.winner} Wins!" }
   end
 
   def run_round
