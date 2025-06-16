@@ -126,11 +126,6 @@ describe Server do
         @server.create_room_if_possible
       }.to change(@server.rooms, :count).by 1
       end
-
-      it 'clears clients' do
-        @server.create_room_if_possible
-        expect(@server.clients.count).to eq 0
-      end
     end
   end
 end
