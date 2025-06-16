@@ -133,17 +133,17 @@ describe RoundResult do
             target: GoFishPlayer.new('Player 2'),
             card_request: 'A',
             matching_cards: [],
-            fished_card: Card.new('A','S')
+            fished_card: Card.new('2','S')
             )
           }
 
           before do
-            result.current_player.hand = [Card.new('A','H'),Card.new('A','D'),Card.new('A','C')]
+            result.current_player.hand = [Card.new('2','H'),Card.new('2','D'),Card.new('2','C')]
             result.current_player.add_card(result.fished_card)
           end
 
           it 'displays book' do
-            expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.card_request}s!"
+            expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.fished_card.rank}s!"
           end
         end
       end
@@ -180,26 +180,6 @@ describe RoundResult do
           it 'displays book' do
             expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.fished_card.rank}s!"
           end
-
-          context 'when fished card made a book' do
-          let(:result) { RoundResult.new(
-            current_player: GoFishPlayer.new('Player 1'),
-            target: GoFishPlayer.new('Player 2'),
-            card_request: 'A',
-            matching_cards: [],
-            fished_card: Card.new('A','S')
-            )
-          }
-
-          before do
-            result.current_player.hand = [Card.new('A','H'),Card.new('A','D'),Card.new('A','C')]
-            result.current_player.add_card(result.fished_card)
-          end
-
-          it 'displays book' do
-            expect(result.display_result_message_to(:current_player)).to include "You got a book of #{result.card_request}s!"
-          end
-        end
         end
       end
     end

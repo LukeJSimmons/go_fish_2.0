@@ -35,8 +35,8 @@ class RoundResult
   end
 
   def player_got_book(player)
-    return "You got a book of As!" if current_player.books.any? { |book| book.first.rank == card_request } if card_request
-    return "You got a book of As!" if current_player.books.any? { |book| book.first.rank == fished_card.rank } if fished_card
+    return "\nYou got a book of #{card_request}s!" if current_player.books.any? { |book| book.first.rank == card_request } if card_request
+    return "\nYou got a book of #{fished_card.rank}s!" if current_player.books.any? { |book| book.first.rank == fished_card.rank } if fished_card
     ""
   end
 
