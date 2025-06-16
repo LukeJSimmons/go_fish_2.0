@@ -36,10 +36,7 @@ class Server
     sleep 0.1
     client = @server.accept_nonblock
     clients << client
-    player_name ||= request_name_from_client(client)
-    player = GoFishPlayer.new(player_name)
-    players << player
-    users << User.new(player_name, client, player)
+    create_user(client, player_name)
     client.puts "Welcome!"
   rescue IO::WaitReadable, Errno::EINTR
   end
@@ -48,7 +45,7 @@ class Server
     return unless clients.count == 2
     users.each { |user| user.client.puts users.map(&:name).join(', ') + " we're ready to play!" }
     room = GoFishRoom.new(users)
-    clients.clear
+    reset_users
     rooms << room
     room
   end
@@ -69,5 +66,18 @@ class Server
     rescue IO::WaitReadable, Errno::EAGAIN
       retry
     end
+  end
+
+  def create_user(client, player_name)
+    player_name ||= request_name_from_client(client)
+    player = GoFishPlayer.new(player_name)
+    players << player
+    users << User.new(player_name, client, player)
+  end
+
+  def reset_users
+    players.clear
+    clients.clear
+    users.clear
   end
 end
