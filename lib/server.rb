@@ -4,6 +4,12 @@ require_relative 'go_fish_room'
 require_relative 'user'
 
 class Server
+  attr_accessor :total_players
+
+  def initialize
+    @total_players = 2
+  end
+
   def port_number
     3000
   end
@@ -42,10 +48,10 @@ class Server
   end
 
   def create_room_if_possible
-    return unless clients.count == 2
+    return unless clients.count == total_players
     users.each { |user| user.client.puts users.map(&:name).join(', ') + " we're ready to play!" }
     room = GoFishRoom.new(users)
-    reset_users
+    # reset_users
     rooms << room
     room
   end
