@@ -45,7 +45,9 @@ class GoFishGame
   def winner
     player_books_counts = players.map { |player| player.books.count }
 
-    players[player_books_counts.find_index(player_books_counts.max)] if deck.empty? && players.all? { |player| player.hand.empty? }
+    return players[highest_book_index(players.map(&:books))] if player_books_counts.all? { |book_count| book_count == player_books_counts.first } if game_over?
+
+    players[most_books_index(player_books_counts)] if game_over?
   end
 
   def has_opponent_with_name?(name)
@@ -69,5 +71,18 @@ class GoFishGame
 
   def go_fish
     current_player.add_card(deck.draw_card)
+  end
+
+  def game_over?
+    deck.empty? && players.all? { |player| player.hand.empty? }
+  end
+
+  def most_books_index(books_counts)
+    books_counts.find_index(books_counts.max)
+  end
+
+  def highest_book_index(books)
+    book_ranks = books.map { |book| Card::RANKS.find_index(book.first) }
+    book_ranks.find_index(book_ranks.max)
   end
 end

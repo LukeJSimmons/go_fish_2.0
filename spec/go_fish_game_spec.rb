@@ -76,6 +76,30 @@ describe GoFishGame do
           expect(game.winner.name).to eq 'Player 2'
         end
       end
+
+      context 'when there is a tie for amount of books' do
+        context 'when player 1 has highest rank book' do
+          before do
+            game.players.first.books = ['A']
+            game.players.last.books = ['2']
+          end
+
+          it 'returns player 1' do
+            expect(game.winner.name).to eq 'Player 1'
+          end
+        end
+
+        context 'when player 2 has highest rank book' do
+          before do
+            game.players.first.books = ['2']
+            game.players.last.books = ['A']
+          end
+
+          it 'returns player 2' do
+            expect(game.winner.name).to eq 'Player 2'
+          end
+        end
+      end
     end
 
     context 'when deck is not empty' do
